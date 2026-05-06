@@ -6,85 +6,228 @@
     <title>{{ config('app.name', 'Bakery Management') }} - Forecasting</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-    </style>
 </head>
-<body class="text-slate-800">
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-bread-slice text-amber-600 text-2xl mr-2"></i>
-                        <span class="font-bold text-xl tracking-tight text-slate-900">Bakery<span class="text-amber-600">Pro</span></span>
-                    </div>
-                    <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
-                        <a href="/" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
-                        <a href="/forecasting" class="border-amber-500 text-slate-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Forecasting</a>
-                        <a href="#" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Kasir</a>
-                        <a href="#" class="border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Inventory</a>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 shadow-sm hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
-                            <i class="fas fa-plus mr-2"></i>
-                            <span>Transaksi Baru</span>
-                        </button>
-                    </div>
-                </div>
+<body class="font-sans antialiased bg-[#f8fafc] dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex min-h-screen m-0 transition-colors duration-300">
+    <!-- Sidebar -->
+    <aside class="w-[280px] max-lg:w-[80px] bg-[#111827] text-[#9ca3af] flex flex-col h-screen sticky top-0 border-r border-white/5 dark:border-slate-800 shrink-0 z-[100] transition-all duration-300">
+        <!-- Sidebar Header -->
+        <div class="p-8 px-6 flex items-center gap-[14px] bg-[#111827] border-b border-white/5 dark:border-slate-800 max-lg:justify-center max-lg:px-0">
+            <div class="w-11 h-11 bg-gradient-to-br from-[#f97316] to-[#ea580c] rounded-xl flex items-center justify-center text-white text-xl shadow-[0_4px_15px_rgba(249,115,22,0.4)] shrink-0">
+                <i class="fas fa-bread-slice"></i>
+            </div>
+            <div class="flex flex-col max-lg:hidden overflow-hidden transition-all">
+                <span class="text-white font-extrabold text-xl tracking-tight leading-none">RotiKita</span>
+                <span class="text-[0.7rem] text-[#9ca3af] font-medium mt-1">Bakery Management System</span>
             </div>
         </div>
-    </nav>
+        
+        <!-- Sidebar Content -->
+        <div class="flex-1 py-6 px-3.5 overflow-y-auto max-lg:px-2">
+            <!-- Menu Utama -->
+            <div class="mb-7">
+                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Menu Utama</span>
+                <ul class="list-none p-0 m-0">
+                    <li class="mb-1 relative group">
+                        @php $isActive = request()->routeIs('dashboard') || request()->is('/'); @endphp
+                        @if($isActive)
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                        @endif
+                        <a href="{{ route('dashboard') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                            <i class="fas fa-chart-pie w-[22px] text-center text-lg opacity-80 shrink-0"></i>
+                            <span class="text-sm font-semibold max-lg:hidden">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-1.5 relative group">
+                        @php $isActive = request()->routeIs('transaksi.index'); @endphp
+                        @if($isActive)
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                        @endif
+                        <a href="{{ route('transaksi.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                            <i class="fas fa-cash-register w-[22px] text-center text-lg opacity-80 shrink-0"></i>
+                            <span class="text-sm font-semibold max-lg:hidden">Transaksi</span>
+                        </a>
+                    </li>
+                    <li class="mb-1.5 relative group">
+                        @php $isActive = request()->routeIs('inventory.index'); @endphp
+                        @if($isActive)
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                        @endif
+                        <a href="{{ route('inventory.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                            <i class="fas fa-boxes w-[22px] text-center text-lg opacity-80 shrink-0"></i>
+                            <span class="text-sm font-semibold max-lg:hidden">Inventory</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Machine Learning -->
+            <div class="mb-7">
+                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Machine Learning</span>
+                <ul class="list-none p-0 m-0">
+                    <li class="mb-1.5 relative group">
+                        @php $isActive = request()->is('forecasting*'); @endphp
+                        @if($isActive)
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                        @endif
+                        <a href="/forecasting" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                            <i class="fas fa-brain w-[22px] text-center text-lg opacity-80 shrink-0"></i>
+                            <span class="text-sm font-semibold max-lg:hidden">Forecasting</span>
+                            <span class="py-0.5 px-2 rounded-md text-[0.65rem] font-black ml-auto tracking-tighter bg-emerald-500 text-white shadow-[0_2px_8px_rgba(16,185,129,0.3)] max-lg:hidden">ML</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Administrasi -->
+            <div class="mb-7">
+                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Administrasi</span>
+                <ul class="list-none p-0 m-0">
+                    <li class="mb-1.5 relative group">
+                        @php $isActive = request()->routeIs('laporan.index'); @endphp
+                        @if($isActive)
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                        @endif
+                        <a href="{{ route('laporan.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                            <i class="fas fa-file-invoice w-[22px] text-center text-lg opacity-80 shrink-0"></i>
+                            <span class="text-sm font-semibold max-lg:hidden">Laporan</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Sidebar Footer -->
+        <div class="p-6 border-t border-white/5 dark:border-slate-800 bg-black/10 max-lg:px-2">
+            <div class="flex items-center gap-3.5">
+                <div class="w-[42px] h-[42px] bg-[#f97316] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_10px_rgba(249,115,22,0.3)] shrink-0">
+                    A
+                </div>
+                <div class="flex flex-col flex-1 max-lg:hidden overflow-hidden">
+                    <span class="text-white text-[0.9rem] font-bold truncate">Admin</span>
+                    <span class="text-[0.75rem] text-[#9ca3af] truncate">Pemilik Toko</span>
+                </div>
+                <button class="bg-transparent border-none text-[#9ca3af] cursor-pointer text-xl transition-all duration-200 p-2 rounded-lg hover:text-red-500 hover:bg-red-500/10 max-lg:hidden">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
 
-    <main class="py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-y-auto h-screen transition-colors duration-300">
+        <!-- Persistent Top Header -->
+        <header class="sticky top-0 z-[90] glass-card border-b border-slate-200 dark:border-slate-800 px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">@yield('title', 'Dashboard')</h2>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <!-- Date -->
+                <div class="flex flex-col items-end">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">Tanggal</span>
+                    <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</span>
+                </div>
+                
+                <!-- Separator -->
+                <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+                
+                <!-- Time -->
+                <div class="flex flex-col items-end min-w-[60px]">
+                    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">Waktu</span>
+                    <span id="live-clock" class="text-sm font-black text-amber-600 dark:text-amber-500 tabular-nums">--:--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-10 max-w-[1400px] mx-auto w-full max-lg:p-6">
             @if(session('success'))
-                <div class="mb-4 bg-emerald-50 border-l-4 border-emerald-400 p-4">
+                <div class="mb-6 bg-emerald-50 dark:bg-emerald-950/30 border-l-4 border-emerald-400 p-4 rounded-r-lg shadow-sm">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <i class="fas fa-check-circle text-emerald-400"></i>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-emerald-700">{{ session('success') }}</p>
+                            <p class="text-sm text-emerald-700 dark:text-emerald-300 font-medium">{{ session('success') }}</p>
                         </div>
                     </div>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="mb-4 bg-rose-50 border-l-4 border-rose-400 p-4">
+                <div class="mb-6 bg-rose-50 dark:bg-rose-950/30 border-l-4 border-rose-400 p-4 rounded-r-lg shadow-sm">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <i class="fas fa-exclamation-circle text-rose-400"></i>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-rose-700">{{ session('error') }}</p>
+                            <p class="text-sm text-rose-700 dark:text-rose-300 font-medium">{{ session('error') }}</p>
                         </div>
                     </div>
                 </div>
             @endif
 
             @yield('content')
-        </div>
-    </main>
+        </main>
 
-    <footer class="bg-white border-t border-slate-200 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-slate-500 text-sm">
-                &copy; {{ date('Y') }} Bakery Management System. Integrated with ML Forecasting.
-            </p>
-        </div>
-    </footer>
+        <footer class="py-8 mt-auto border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-8">
+                <p class="text-center text-slate-400 dark:text-slate-600 text-[10px] font-bold tracking-widest uppercase">
+                    &copy; {{ date('Y') }} ROTIKITA BAKERY MANAGEMENT SYSTEM. INTEGRATED WITH ML FORECASTING.
+                </p>
+            </div>
+        </footer>
+    </div>
 
     @stack('scripts')
+    
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const clockElement = document.getElementById('live-clock');
+            if (clockElement) {
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock(); // Initial call
+    </script>
+    
+    <style>
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .glass-card {
+                background: rgba(30, 41, 59, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+            }
+        }
+    </style>
 </body>
 </html>
