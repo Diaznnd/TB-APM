@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'Bakery Management') }} - Forecasting</title>
+    <title>{{ config('app.name', 'RotiKita Bakery Management System') }} - Forecasting</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -25,17 +25,17 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="font-sans antialiased bg-[#f8fafc] dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex min-h-screen m-0 transition-colors duration-300">
+<body class="font-sans antialiased bg-[#fdfbf7] dark:bg-slate-950 text-[#6d462d] dark:text-slate-100 flex min-h-screen m-0 transition-colors duration-300">
     <!-- Sidebar -->
-    <aside class="w-[280px] max-lg:w-[80px] bg-[#111827] text-[#9ca3af] flex flex-col h-screen sticky top-0 border-r border-white/5 dark:border-slate-800 shrink-0 z-[100] transition-all duration-300">
+    <aside class="w-[280px] max-lg:w-[80px] bg-white dark:bg-[#111827] text-slate-500 dark:text-[#9ca3af] flex flex-col h-screen sticky top-0 border-r border-slate-200 dark:border-white/5 shrink-0 z-[100] transition-all duration-300">
         <!-- Sidebar Header -->
-        <div class="p-8 px-6 flex items-center gap-[14px] bg-[#111827] border-b border-white/5 dark:border-slate-800 max-lg:justify-center max-lg:px-0">
-            <div class="w-11 h-11 bg-gradient-to-br from-[#f97316] to-[#ea580c] rounded-xl flex items-center justify-center text-white text-xl shadow-[0_4px_15px_rgba(249,115,22,0.4)] shrink-0">
+        <div class="p-8 px-6 flex items-center gap-[14px] bg-white dark:bg-[#111827] border-b border-slate-100 dark:border-white/5 max-lg:justify-center max-lg:px-0">
+            <div class="w-11 h-11 bg-gradient-to-br from-[#d3a15c] to-[#c58744] dark:from-[#f97316] dark:to-[#ea580c] rounded-xl flex items-center justify-center text-white text-xl shadow-sm dark:shadow-[0_4px_15px_rgba(249,115,22,0.4)] shrink-0">
                 <i class="fas fa-bread-slice"></i>
             </div>
             <div class="flex flex-col max-lg:hidden overflow-hidden transition-all">
-                <span class="text-white font-extrabold text-xl tracking-tight leading-none">RotiKita</span>
-                <span class="text-[0.7rem] text-[#9ca3af] font-medium mt-1">Bakery Management System</span>
+                <span class="text-slate-800 dark:text-white font-extrabold text-xl tracking-tight leading-none">RotiKita</span>
+                <span class="text-[0.7rem] text-slate-400 dark:text-[#9ca3af] font-medium mt-1">Bakery Management System</span>
             </div>
         </div>
         
@@ -43,14 +43,14 @@
         <div class="flex-1 py-6 px-3.5 overflow-y-auto max-lg:px-2">
             <!-- Menu Utama -->
             <div class="mb-7">
-                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Menu Utama</span>
+                <span class="text-[0.65rem] font-extrabold text-slate-400 dark:text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Menu Utama</span>
                 <ul class="list-none p-0 m-0">
                     <li class="mb-1 relative group">
                         @php $isActive = request()->routeIs('dashboard') || request()->is('/'); @endphp
                         @if($isActive)
-                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="{{ route('dashboard') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="{{ route('dashboard') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-chart-pie w-[22px] text-center text-lg opacity-80 shrink-0"></i>
                             <span class="text-sm font-semibold max-lg:hidden">Dashboard</span>
                         </a>
@@ -58,9 +58,9 @@
                     <li class="mb-1.5 relative group">
                         @php $isActive = request()->routeIs('transaksi.index'); @endphp
                         @if($isActive)
-                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="{{ route('transaksi.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="{{ route('transaksi.index') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-cash-register w-[22px] text-center text-lg opacity-80 shrink-0"></i>
                             <span class="text-sm font-semibold max-lg:hidden">Transaksi</span>
                         </a>
@@ -68,9 +68,9 @@
                     <li class="mb-1.5 relative group">
                         @php $isActive = request()->routeIs('inventory.index'); @endphp
                         @if($isActive)
-                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="{{ route('inventory.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="{{ route('inventory.index') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-boxes w-[22px] text-center text-lg opacity-80 shrink-0"></i>
                             <span class="text-sm font-semibold max-lg:hidden">Inventory</span>
                         </a>
@@ -80,14 +80,14 @@
             
             <!-- Machine Learning -->
             <div class="mb-7">
-                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Machine Learning</span>
+                <span class="text-[0.65rem] font-extrabold text-slate-400 dark:text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Machine Learning</span>
                 <ul class="list-none p-0 m-0">
                     <li class="mb-1.5 relative group">
                         @php $isActive = request()->is('forecasting*'); @endphp
                         @if($isActive)
-                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="/forecasting" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="/forecasting" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-brain w-[22px] text-center text-lg opacity-80 shrink-0"></i>
                             <span class="text-sm font-semibold max-lg:hidden">Forecasting</span>
                             <span class="py-0.5 px-2 rounded-md text-[0.65rem] font-black ml-auto tracking-tighter bg-emerald-500 text-white shadow-[0_2px_8px_rgba(16,185,129,0.3)] max-lg:hidden">ML</span>
@@ -98,14 +98,14 @@
             
             <!-- Administrasi -->
             <div class="mb-7">
-                <span class="text-[0.65rem] font-extrabold text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Administrasi</span>
+                <span class="text-[0.65rem] font-extrabold text-slate-400 dark:text-[#4b5563] px-3 mb-3.5 block tracking-[1.5px] uppercase max-lg:hidden">Administrasi</span>
                 <ul class="list-none p-0 m-0">
                     <li class="mb-1.5 relative group">
-                        @php $isActive = request()->routeIs('laporan.index'); @endphp
+                        @php $isActive = request()->routeIs('laporan.*'); @endphp
                         @if($isActive)
-                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="{{ route('laporan.index') }}" class="flex items-center p-2 px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#3f2b1d] text-white' : 'text-[#9ca3af] hover:bg-white/5 hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="{{ route('laporan.index') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-file-invoice w-[22px] text-center text-lg opacity-80 shrink-0"></i>
                             <span class="text-sm font-semibold max-lg:hidden">Laporan</span>
                         </a>
@@ -115,16 +115,16 @@
         </div>
         
         <!-- Sidebar Footer -->
-        <div class="p-6 border-t border-white/5 dark:border-slate-800 bg-black/10 max-lg:px-2">
-            <div class="flex items-center gap-3.5">
-                <div class="w-[42px] h-[42px] bg-[#f97316] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-[0_4px_10px_rgba(249,115,22,0.3)] shrink-0">
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-black/10 max-lg:px-2">
+            <div class="flex items-center gap-3.5 bg-[#fdfbf7] dark:bg-transparent p-3 dark:p-0 rounded-2xl border border-[#f2e7d0] dark:border-transparent">
+                <div class="w-[42px] h-[42px] bg-[#d3a15c] dark:bg-[#f97316] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm dark:shadow-[0_4px_10px_rgba(249,115,22,0.3)] shrink-0">
                     A
                 </div>
                 <div class="flex flex-col flex-1 max-lg:hidden overflow-hidden">
-                    <span class="text-white text-[0.9rem] font-bold truncate">Admin</span>
-                    <span class="text-[0.75rem] text-[#9ca3af] truncate">Pemilik Toko</span>
+                    <span class="text-slate-800 dark:text-white text-[0.9rem] font-bold truncate">Admin</span>
+                    <span class="text-[0.75rem] text-slate-500 dark:text-[#9ca3af] truncate">Pemilik Toko</span>
                 </div>
-                <button class="bg-transparent border-none text-[#9ca3af] cursor-pointer text-xl transition-all duration-200 p-2 rounded-lg hover:text-red-500 hover:bg-red-500/10 max-lg:hidden">
+                <button class="bg-transparent border-none text-slate-400 dark:text-[#9ca3af] cursor-pointer text-xl transition-all duration-200 p-2 rounded-lg hover:text-[#c58744] dark:hover:text-red-500 hover:bg-[#f9f5ec] dark:hover:bg-red-500/10 max-lg:hidden">
                     <i class="fas fa-arrow-right-from-bracket"></i>
                 </button>
             </div>
@@ -136,7 +136,7 @@
         <!-- Persistent Top Header -->
         <header class="sticky top-0 z-[90] glass-card border-b border-slate-200 dark:border-slate-800 px-8 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">@yield('title', 'Dashboard')</h2>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">@yield('title', 'LAPORAN')</h2>
             </div>
             
             <div class="flex items-center gap-6">
