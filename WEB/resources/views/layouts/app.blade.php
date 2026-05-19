@@ -56,13 +56,13 @@
                         </a>
                     </li>
                     <li class="mb-1.5 relative group">
-                        @php $isActive = request()->routeIs('transaksi.index'); @endphp
+                        @php $isActive = request()->routeIs('transactions.index'); @endphp
                         @if($isActive)
                             <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-[#f97316] rounded-r z-10 hidden dark:block"></div>
                         @endif
-                        <a href="{{ route('transaksi.index') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
+                        <a href="{{ route('transactions.index') }}" class="flex items-center p-3 dark:p-2 px-4 dark:px-3.5 rounded-xl transition-all duration-200 gap-3.5 {{ $isActive ? 'bg-[#d3a15c] dark:bg-[#3f2b1d] text-white shadow-md dark:shadow-none shadow-[#d3a15c]/20' : 'text-slate-600 dark:text-[#9ca3af] hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[#c58744] dark:hover:text-white' }} max-lg:justify-center max-lg:px-0">
                             <i class="fas fa-cash-register w-[22px] text-center text-lg opacity-80 shrink-0"></i>
-                            <span class="text-sm font-semibold max-lg:hidden">Transaksi</span>
+                            <span class="text-sm font-semibold max-lg:hidden">Transactions</span>
                         </a>
                     </li>
                     <li class="mb-1.5 relative group">

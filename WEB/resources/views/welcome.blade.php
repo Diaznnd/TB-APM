@@ -31,7 +31,7 @@
                 <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-transparent">
                     <i class="fas fa-cash-register"></i>
                 </div>
-                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Transaksi Hari Ini</span>
+                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Transactions Today</span>
             </div>
             <h3 class="text-3xl font-black text-[#6d462d] dark:text-white">{{ number_format($totalTransaksi, 0, ',', '.') }}</h3>
             <p class="text-xs {{ $changeTransaksi >= 0 ? 'text-emerald-600 dark:text-emerald-500' : 'text-rose-600 dark:text-rose-500' }} mt-2 font-bold flex items-center gap-1">
@@ -45,16 +45,16 @@
                 <div class="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg border border-purple-100 dark:border-transparent">
                     <i class="fas fa-boxes"></i>
                 </div>
-                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Stok Menipis</span>
+                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Low Stock</span>
             </div>
             <h3 class="text-3xl font-black text-[#6d462d] dark:text-white">{{ $stokMenipis }}</h3>
             @if($stokMenipis > 0)
             <p class="text-xs text-rose-600 dark:text-rose-500 mt-2 font-bold flex items-center gap-1">
-                <i class="fas fa-exclamation-triangle"></i> Perlu restock
+                <i class="fas fa-exclamation-triangle"></i> Needs restocking
             </p>
             @else
             <p class="text-xs text-[#a56a39] dark:text-slate-400 mt-2 font-bold flex items-center gap-1">
-                <i class="fas fa-check"></i> Stok aman
+                <i class="fas fa-check"></i> Stock is sufficient
             </p>
             @endif
         </div>
@@ -65,10 +65,10 @@
                 <div class="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-100 dark:border-transparent">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Prediksi Besok</span>
+                <span class="text-[10px] font-bold text-[#a56a39] dark:text-slate-500 uppercase tracking-widest">Tomorrow's Prediction</span>
             </div>
             <h3 class="text-3xl font-black text-[#6d462d] dark:text-white">{{ number_format($prediksiTotal, 0, ',', '.') }}</h3>
-            <p class="text-xs text-[#865534] dark:text-slate-400 mt-2 font-medium">Estimasi total unit terjual</p>
+            <p class="text-xs text-[#865534] dark:text-slate-400 mt-2 font-medium">Estimated total units to be sold</p>
         </div>
 
         <!-- Stat 4 (Model ML) -->

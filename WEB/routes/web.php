@@ -3,16 +3,33 @@
 use App\Http\Controllers\ForecastingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/transaksi', function () {
-    return view('transaksi.index');
-})->name('transaksi.index');
+Route::get('/transactions', [TransactionController::class, 'index'])
+    ->name('transactions.index');
 
-Route::get('/inventory', function () {
-    return view('inventory.index');
-})->name('inventory.index');
+Route::post('/transactions/store', [TransactionController::class, 'store'])
+    ->name('transactions.store');
+
+Route::get('/transactions/history', [TransactionController::class, 'history'])
+    ->name('transactions.history');
+
+Route::get('/inventory', [ProductController::class, 'index'])->name('inventory.index');
+
+Route::post('/inventory/products', [ProductController::class, 'store'])
+    ->name('inventory.products.store');
+
+Route::get('/inventory/products/{id}', [ProductController::class, 'show'])
+    ->name('inventory.products.show');
+
+Route::put('/inventory/products/{id}', [ProductController::class, 'update'])
+    ->name('inventory.products.update');
+
+Route::delete('/inventory/products/{id}', [ProductController::class, 'destroy'])
+    ->name('inventory.products.destroy');
 
 Route::get('/laporan', [ReportController::class, 'index'])->name('laporan.index');
 Route::get('/laporan/pdf', [ReportController::class, 'exportPdf'])->name('laporan.pdf');
