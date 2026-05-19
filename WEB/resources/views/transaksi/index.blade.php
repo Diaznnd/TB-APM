@@ -48,7 +48,7 @@
                 class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-5 hover:shadow-lg transition product-item"
                 data-name="{{ strtolower($product->name) }}"
             >
-                <!-- PRODUCT INFO -->
+
                 <div class="mb-4">
 
                     <div class="flex items-start justify-between">
@@ -81,7 +81,6 @@
 
                 </div>
 
-                <!-- STOCK -->
                 <div class="mb-4">
 
                     <div class="flex justify-between items-center text-sm">
@@ -96,18 +95,8 @@
 
                     </div>
 
-                    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mt-2 overflow-hidden">
-
-                        <div
-                            class="bg-yellow-500 h-2 rounded-full"
-                            style="width: {{ min(($product->stock / 100) * 100, 100) }}%"
-                        ></div>
-
-                    </div>
-
                 </div>
 
-                <!-- BUTTON -->
                 @if($product->stock > 0)
 
                 <button
@@ -160,7 +149,6 @@
 
             <div id="cartItems" class="space-y-4"></div>
 
-            <!-- EMPTY -->
             <div id="emptyCart" class="text-center py-10 text-slate-400">
                 Keranjang masih kosong
             </div>
@@ -218,7 +206,47 @@
 
         <div class="space-y-3 max-h-[300px] overflow-auto mb-5" id="paymentItems"></div>
 
-        <div class="border-t pt-4">
+        <!-- PAYMENT METHOD -->
+        <div class="mt-5">
+
+            <label class="block mb-2 font-semibold text-slate-700 dark:text-slate-200">
+                Metode Pembayaran
+            </label>
+
+            <div class="grid grid-cols-3 gap-3">
+
+                <button
+                    type="button"
+                    onclick="selectPayment('cash')"
+                    id="payment-cash"
+                    class="payment-method border-2 border-yellow-500 bg-yellow-50 text-yellow-700 py-3 rounded-xl font-semibold transition"
+                >
+                    Cash
+                </button>
+
+                <button
+                    type="button"
+                    onclick="selectPayment('card')"
+                    id="payment-card"
+                    class="payment-method border border-slate-300 py-3 rounded-xl font-semibold transition"
+                >
+                    Card
+                </button>
+
+                <button
+                    type="button"
+                    onclick="selectPayment('qris')"
+                    id="payment-qris"
+                    class="payment-method border border-slate-300 py-3 rounded-xl font-semibold transition"
+                >
+                    QRIS
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="border-t pt-4 mt-5">
 
             <div class="flex justify-between text-lg font-bold">
 
@@ -260,6 +288,7 @@
 <script>
 
 let cart = [];
+let paymentMethod = 'cash';
 
 function showToast(message, type = 'success')
 {
@@ -292,6 +321,31 @@ function showToast(message, type = 'success')
         }, 300);
 
     }, 2500);
+}
+
+function selectPayment(method)
+{
+    paymentMethod = method;
+
+    document.querySelectorAll('.payment-method')
+    .forEach(btn => {
+
+        btn.classList.remove(
+            'border-yellow-500',
+            'bg-yellow-50',
+            'text-yellow-700'
+        );
+
+    });
+
+    const active =
+        document.getElementById('payment-' + method);
+
+    active.classList.add(
+        'border-yellow-500',
+        'bg-yellow-50',
+        'text-yellow-700'
+    );
 }
 
 function addToCart(id, name, price, stock)
@@ -343,13 +397,13 @@ function renderCart()
         totalItem += item.qty;
 
         container.innerHTML += `
-            <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+            <div class="border border-slate-200 rounded-xl p-3">
 
                 <div class="flex justify-between items-start">
 
                     <div>
 
-                        <h4 class="font-semibold text-slate-800 dark:text-slate-100">
+                        <h4 class="font-semibold">
                             ${item.name}
                         </h4>
 
@@ -361,7 +415,7 @@ function renderCart()
 
                     <button
                         onclick="removeItem(${index})"
-                        class="text-red-500 hover:text-red-700"
+                        class="text-red-500"
                     >
                         ✕
                     </button>
@@ -372,7 +426,7 @@ function renderCart()
 
                     <button
                         onclick="decreaseQty(${index})"
-                        class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold"
+                        class="w-8 h-8 rounded-lg bg-slate-300 text-black font-bold"
                     >
                         -
                     </button>
@@ -494,7 +548,8 @@ function confirmCheckout()
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         body: JSON.stringify({
-            cart: cart
+            cart: cart,
+            metode_bayar: paymentMethod
         })
     })
     .then(res => res.json())
