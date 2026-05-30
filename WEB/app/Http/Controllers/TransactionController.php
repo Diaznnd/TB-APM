@@ -88,10 +88,27 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function history()
+    public function history(Request $request)
     {
-        $transactions = Transaction::latest()->get();
+        $query = Transaction::latest();
 
-        return view('transaksi.history', compact('transactions'));
+        // Penyaringan berdasarkan kata kunci pencarian produk (server-side)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('item', 'like', '%' . $search . '%');
+        }
+
+        // Penyaringan berdasarkan tanggal transaksi (server-side)
+        if ($request->filled('date')) {
+            $query->whereDate('date_time', $request->date);
+        }
+
+        // Hitung total pendapatan dari hasil yang terfilter sebelum dipaginasi
+        $grandTotal = $query->sum('subtotal');
+
+        // Paginasi 20 data per halaman dengan mempertahankan query string saringan
+        $transactions = $query->paginate(20)->withQueryString();
+
+        return view('transaksi.history', compact('transactions', 'grandTotal'));
     }
 }

@@ -32,16 +32,31 @@ class DashboardController extends Controller
             ? round((($totalPendapatan - $pendapatanKemarin) / $pendapatanKemarin) * 100)
             : 0;
 
-        // ── Stok menipis (sederhana: produk dengan qty terjual hari ini > avg) ──
-        // Karena tidak ada tabel stok, tampilkan jumlah item dengan penjualan > threshold
-        // Sesuaikan jika ada tabel inventory
-        $stokMenipis = 0; // Set default 0 karena belum ada query riil
+        // ── Stok menipis (mengambil data dari model Product dengan stok <= 10) ──
+        $stokMenipis = \App\Models\Product::where('stock', '<=', 10)->count();
 
         // ── Prediksi besok (dari tabel forecasts) ──
         $tomorrow = Carbon::tomorrow()->toDateString();
         $prediksiRows = Forecast::where('tanggal_prediksi', $tomorrow)
             ->orderByDesc('prediksi_transaksi')
             ->get(['mode', 'prediksi_transaksi']);
+
+        $isFallbackDate = false;
+        $prediksiTanggal = $tomorrow;
+
+        if ($prediksiRows->isEmpty()) {
+            $latestPredictionDate = Forecast::latest('tanggal_prediksi')->value('tanggal_prediksi');
+            if ($latestPredictionDate) {
+                $prediksiTanggal = $latestPredictionDate instanceof Carbon
+                    ? $latestPredictionDate->toDateString()
+                    : Carbon::parse($latestPredictionDate)->toDateString();
+
+                $prediksiRows = Forecast::where('tanggal_prediksi', $prediksiTanggal)
+                    ->orderByDesc('prediksi_transaksi')
+                    ->get(['mode', 'prediksi_transaksi']);
+                $isFallbackDate = true;
+            }
+        }
 
         $prediksiTotal = $prediksiRows->sum('prediksi_transaksi') ?: 0;
         $forecastBesok = $prediksiRows->take(5)->toArray();
@@ -139,7 +154,8 @@ class DashboardController extends Controller
             'data7Hari',
             'periodeData',
             'weekdayData', 'weekendBoost',
-            'transaksiTerbaru'
+            'transaksiTerbaru',
+            'isFallbackDate', 'prediksiTanggal'
         ));
     }
 }

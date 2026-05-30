@@ -40,15 +40,29 @@ TARGET   = 'jumlah_transaksi'
 def _build_daily_features(daily: pd.DataFrame) -> pd.DataFrame:
     """
     Tambahkan feature engineering (lag, moving average, time features)
-    ke DataFrame agregasi harian.
+    ke DataFrame agregasi harian dengan re-indexing harian penuh.
+    Mengisi tanggal kosong dengan 0 transaksi agar lag dihitung secara akurat.
     """
-    daily = daily.copy().sort_values('date').reset_index(drop=True)
-    daily['day_of_week'] = pd.to_datetime(daily['date']).dt.dayofweek
-    daily['month']       = pd.to_datetime(daily['date']).dt.month
+    daily = daily.copy()
+    daily['date'] = pd.to_datetime(daily['date'])
+    daily = daily.sort_values('date').set_index('date')
+    
+    # Buat rentang tanggal kalender penuh tanpa celah
+    full_range = pd.date_range(start=daily.index.min(), end=daily.index.max(), freq='D')
+    
+    # Re-index dan isi hari kosong transaksi dengan 0
+    daily = daily.reindex(full_range, fill_value=0).reset_index().rename(columns={'index': 'date'})
+    
+    # Buat fitur numerik runtun waktu
+    daily['day_of_week'] = daily['date'].dt.dayofweek
+    daily['month']       = daily['date'].dt.month
+    
+    # Hitung lag dan moving average secara konsisten
     daily['lag_1']       = daily[TARGET].shift(1)
     daily['lag_2']       = daily[TARGET].shift(2)
     daily['ma_3']        = daily[TARGET].rolling(3).mean()
-    return daily.dropna()
+    
+    return daily.dropna().reset_index(drop=True)
 
 
 def _train_rf(X_train, y_train):
@@ -127,7 +141,9 @@ def retrain_from_json(transactions: list) -> dict:
         joblib.dump(metrics_total, METRICS_PATH)
 
         # Simpan last_state dari 5 hari terakhir
-        last_state = daily_total[['date', TARGET]].tail(5).to_dict(orient='records')
+        daily_total_state = daily_total.copy()
+        daily_total_state['date'] = daily_total_state['date'].dt.date
+        last_state = daily_total_state[['date', TARGET]].tail(5).to_dict(orient='records')
         joblib.dump(last_state, STATE_PATH)
 
         result["total_model"] = {
@@ -173,7 +189,9 @@ def retrain_from_json(transactions: list) -> dict:
         prod_model_path = os.path.join(PRODUCT_MODELS_DIR, f"{slug}.pkl")
         prod_state_path = os.path.join(PRODUCT_MODELS_DIR, f"{slug}_state.pkl")
         joblib.dump(model_prod, prod_model_path)
-        last_state_prod = daily_prod[['date', TARGET]].tail(5).to_dict(orient='records')
+        daily_prod_state = daily_prod.copy()
+        daily_prod_state['date'] = daily_prod_state['date'].dt.date
+        last_state_prod = daily_prod_state[['date', TARGET]].tail(5).to_dict(orient='records')
         joblib.dump(last_state_prod, prod_state_path)
 
         per_produk_summary[product] = {
@@ -188,10 +206,10 @@ def retrain_from_json(transactions: list) -> dict:
     )
 
     # Reload model ke memory (update global state di app/model.py)
-    # try:
-    #     from app.model import load_model
-    #     load_model()
-    # except Exception:
-    #     pass  # Jika gagal reload, tidak apa-apa – model sudah disimpan di disk
+    try:
+        from app.model import load_model
+        load_model()
+    except Exception:
+        pass  # Jika gagal reload, tidak apa-apa – model sudah disimpan di disk
 
     return result

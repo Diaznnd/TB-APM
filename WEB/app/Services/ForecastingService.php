@@ -83,10 +83,13 @@ class ForecastingService
 
             $data = $response->json();
 
-            // Hapus prediksi lama untuk mode 'total' di tanggal yang sama
-            Forecast::where('mode', 'total')
-                    ->where('tanggal_prediksi', '>=', today())
-                    ->delete();
+            // Hapus prediksi lama untuk mode 'total' pada tanggal yang sama dengan data baru
+            $dates = collect($data['prediksi'] ?? [])->pluck('tanggal')->toArray();
+            if (!empty($dates)) {
+                Forecast::where('mode', 'total')
+                        ->whereIn('tanggal_prediksi', $dates)
+                        ->delete();
+            }
 
             // Simpan prediksi baru
             $generatedAt = now();
@@ -139,10 +142,19 @@ class ForecastingService
 
             $data = $response->json();
 
-            // Hapus prediksi lama per-produk mulai hari ini
-            Forecast::where('mode', '!=', 'total')
-                    ->where('tanggal_prediksi', '>=', today())
-                    ->delete();
+            // Hapus prediksi lama per-produk pada tanggal yang sama dengan data baru
+            $dates = [];
+            foreach ($data['produk'] ?? [] as $productName => $predictions) {
+                foreach ($predictions as $item) {
+                    $dates[] = $item['tanggal'];
+                }
+            }
+            $dates = array_unique($dates);
+            if (!empty($dates)) {
+                Forecast::where('mode', '!=', 'total')
+                        ->whereIn('tanggal_prediksi', $dates)
+                        ->delete();
+            }
 
             $generatedAt = now();
 
@@ -241,18 +253,28 @@ class ForecastingService
      */
     public function getForecastFromDb(): array
     {
-        // Prediksi total
-        $totalForecasts = Forecast::total()
-            ->upcoming(7)
-            ->latestGenerated()
-            ->get();
+        // Ambil generated_at terbaru untuk total
+        $latestTotalGeneratedAt = Forecast::total()->latest('generated_at')->value('generated_at');
 
-        // Prediksi per-produk (ambil semua mode selain 'total')
-        $productForecasts = Forecast::where('mode', '!=', 'total')
-            ->upcoming(7)
-            ->latestGenerated()
-            ->get()
-            ->groupBy('mode');
+        $totalForecasts = collect();
+        if ($latestTotalGeneratedAt) {
+            $totalForecasts = Forecast::total()
+                ->where('generated_at', $latestTotalGeneratedAt)
+                ->orderBy('tanggal_prediksi')
+                ->get();
+        }
+
+        // Ambil generated_at terbaru untuk per produk
+        $latestProductGeneratedAt = Forecast::where('mode', '!=', 'total')->latest('generated_at')->value('generated_at');
+
+        $productForecasts = collect();
+        if ($latestProductGeneratedAt) {
+            $productForecasts = Forecast::where('mode', '!=', 'total')
+                ->where('generated_at', $latestProductGeneratedAt)
+                ->orderBy('tanggal_prediksi')
+                ->get()
+                ->groupBy('mode');
+        }
 
         $generatedAt = $totalForecasts->first()?->generated_at;
         $sumber      = $totalForecasts->first()?->sumber;
@@ -260,7 +282,7 @@ class ForecastingService
         return [
             'total'        => $totalForecasts->values()->toArray(),
             'per_produk'   => $productForecasts->toArray(),
-            'generated_at' => $generatedAt?->format('d M Y H:i'),
+            'generated_at' => $generatedAt ? $generatedAt->format('d M Y H:i') : null,
             'sumber'       => $sumber,
         ];
     }

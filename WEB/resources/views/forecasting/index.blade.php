@@ -7,7 +7,7 @@
     <!-- Unified Premium Page Header Card -->
     <div class="relative overflow-hidden p-6 md:p-8 rounded-3xl bg-gradient-to-br from-white/90 via-white/50 to-[#fdfbf7]/30 dark:from-[#111827]/90 dark:via-[#111827]/60 dark:to-slate-900/30 backdrop-blur-xl border border-slate-200/60 dark:border-white/5 shadow-xl shadow-slate-100/40 dark:shadow-none transition-all duration-300">
         <!-- Glowing background orbs for subtle premium aesthetic -->
-        <div class="absolute top-0 right-0 -mt-12 -mr-12 w-48 h-48 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/5 dark:to-orange-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-0 right-0 -mt-12 -mr-12 w-48 h-48 bg-gradient-to-br from-[#d3a15c]/10 to-[#c58744]/10 dark:from-[#d3a15c]/5 dark:to-[#c58744]/5 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-10 left-1/3 w-36 h-36 bg-emerald-500/5 dark:bg-emerald-500/2 rounded-full blur-2xl pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
@@ -34,12 +34,8 @@
                 <!-- Main Heading & Title -->
                 <div>
                     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                        <span class="bg-gradient-to-r from-amber-600 via-amber-500 to-orange-500 bg-clip-text text-transparent">Forecasting</span> & Machine Learning
+                        <span class="bg-gradient-to-r from-[#d3a15c] to-[#c58744] bg-clip-text text-transparent">Forecasting</span> & Machine Learning
                     </h1>
-                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2.5 leading-relaxed">
-                        Prediksi volume transaksi penjualan bakery menggunakan algoritma <strong class="text-slate-800 dark:text-slate-200 font-semibold">Random Forest Regressor</strong>. 
-                        Sistem menganalisis data historis untuk memproyeksikan kebutuhan stok guna mengoptimalkan produksi dan meminimalkan kerugian (waste).
-                    </p>
                 </div>
 
                 <!-- Horizontal Pills for Key Insights/Meta -->
@@ -74,14 +70,11 @@
                 <div class="flex flex-col gap-3 w-full">
                     <form action="{{ route('forecasting.refresh') }}" method="POST" class="w-full">
                         @csrf
-                        <button type="submit" class="group relative w-full flex items-center justify-center px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 dark:from-amber-600 dark:to-orange-600 dark:hover:from-amber-700 dark:hover:to-orange-700 text-white font-bold rounded-2xl shadow-lg shadow-amber-500/20 dark:shadow-none hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300 outline-none transform active:scale-[0.98]">
+                        <button type="submit" class="group relative w-full flex items-center justify-center px-5 py-3 bg-gradient-to-r from-[#d3a15c] to-[#c58744] hover:from-[#c58744] hover:to-[#a06c30] text-white font-bold rounded-2xl shadow-lg shadow-amber-500/20 dark:shadow-none hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300 outline-none transform active:scale-[0.98]">
                             <i class="fas fa-arrows-rotate mr-2.5 text-sm group-hover:rotate-180 transition-transform duration-700 ease-in-out"></i>
                             <span class="text-sm tracking-wide">Refresh Data Prediksi</span>
                         </button>
                     </form>
-                    <p class="text-[10px] text-center md:text-right text-slate-400 dark:text-slate-500 leading-normal">
-                        Koneksi langsung dengan Flask Engine untuk memperbarui model Machine Learning secara real-time.
-                    </p>
                 </div>
             </div>
         </div>
@@ -201,10 +194,10 @@
         <!-- Chart Legend -->
         <div class="flex items-center gap-5 mb-4">
             <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <span class="w-3 h-3 rounded-sm bg-amber-500/80"></span> Prediksi Harian
+                <span class="w-3 h-3 rounded-sm bg-[#d3a15c]/85"></span> Prediksi Harian
             </div>
             <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                <span class="w-6 h-0.5 bg-orange-500 rounded block"></span> Garis Tren
+                <span class="w-6 h-0.5 bg-[#c58744] rounded block"></span> Garis Tren
             </div>
         </div>
         <div class="h-[400px]">
@@ -503,8 +496,8 @@
                     {
                         label: label,
                         data: values,
-                        backgroundColor: isDark() ? 'rgba(245,158,11,0.55)' : 'rgba(245,158,11,0.7)',
-                        hoverBackgroundColor: isDark() ? 'rgba(245,158,11,0.85)' : 'rgba(217,119,6,0.9)',
+                        backgroundColor: isDark() ? 'rgba(211,161,92,0.55)' : 'rgba(211,161,92,0.7)',
+                        hoverBackgroundColor: isDark() ? 'rgba(211,161,92,0.85)' : 'rgba(197,135,68,0.9)',
                         borderRadius: 8,
                         borderSkipped: false,
                         barPercentage: 0.55,
@@ -515,9 +508,9 @@
                         label: 'Tren',
                         data: values,
                         type: 'line',
-                        borderColor: isDark() ? '#f97316' : '#ea580c',
+                        borderColor: isDark() ? '#d3a15c' : '#c58744',
                         borderWidth: 2,
-                        pointBackgroundColor: isDark() ? '#f97316' : '#ea580c',
+                        pointBackgroundColor: isDark() ? '#d3a15c' : '#c58744',
                         pointBorderColor: isDark() ? '#0f172a' : '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 4,

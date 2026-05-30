@@ -19,7 +19,7 @@ class Forecast extends Model
     ];
 
     protected $casts = [
-        'tanggal_prediksi'   => 'date',
+        'tanggal_prediksi'   => 'date:Y-m-d',
         'prediksi_transaksi' => 'integer',
         'fitur'              => 'array',    // JSON otomatis di-decode
         'generated_at'       => 'datetime',

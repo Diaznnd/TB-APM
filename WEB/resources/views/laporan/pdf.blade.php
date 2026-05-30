@@ -112,7 +112,7 @@
 <body>
 
     <div class="header">
-        <h1>Laporan Penjualan RotiKita Bakery</h1>
+        <h1>Laporan Penjualan Golden Tulip Bakery</h1>
         <p>Periode: {{ $periode }} | Tanggal Cetak: {{ date('d F Y H:i') }}</p>
     </div>
 
@@ -209,7 +209,7 @@
         <div class="signature-area">
             <p>Mengetahui,</p>
             <div class="signature-line"></div>
-            <p style="margin-top: 5px;">Manajer RotiKita Bakery</p>
+            <p style="margin-top: 5px;">Manajer Golden Tulip Bakery</p>
         </div>
     </div>
 

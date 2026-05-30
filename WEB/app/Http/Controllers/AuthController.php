@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         if ($request->username === $expectedUsername && $request->password === $expectedPassword) {
             session(['authenticated' => true]);
-            return redirect()->route('dashboard')->with('success', 'Selamat datang kembali, Admin RotiKita!');
+            return redirect()->route('dashboard')->with('success', 'Selamat datang kembali, Admin Golden Tulip Bakery!');
         }
 
         return back()
