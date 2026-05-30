@@ -7,8 +7,15 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Check local storage or system preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
         tailwind.config = {
-            darkMode: 'media',
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -124,9 +131,12 @@
                     <span class="text-slate-800 dark:text-white text-[0.9rem] font-bold truncate">Admin</span>
                     <span class="text-[0.75rem] text-slate-500 dark:text-[#9ca3af] truncate">Pemilik Toko</span>
                 </div>
-                <button class="bg-transparent border-none text-slate-400 dark:text-[#9ca3af] cursor-pointer text-xl transition-all duration-200 p-2 rounded-lg hover:text-[#c58744] dark:hover:text-red-500 hover:bg-[#f9f5ec] dark:hover:bg-red-500/10 max-lg:hidden">
-                    <i class="fas fa-arrow-right-from-bracket"></i>
-                </button>
+                <form action="{{ route('logout') }}" method="POST" class="m-0 p-0 max-lg:hidden">
+                    @csrf
+                    <button type="submit" class="bg-transparent border-none text-slate-400 dark:text-[#9ca3af] cursor-pointer text-xl transition-all duration-200 p-2 rounded-lg hover:text-[#c58744] dark:hover:text-red-500 hover:bg-[#f9f5ec] dark:hover:bg-red-500/10" title="Keluar Sistem">
+                        <i class="fas fa-arrow-right-from-bracket"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
@@ -154,6 +164,14 @@
                     <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">Waktu</span>
                     <span id="live-clock" class="text-sm font-black text-amber-600 dark:text-amber-500 tabular-nums">--:--:--</span>
                 </div>
+
+                <!-- Separator -->
+                <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+
+                <!-- Dark Mode Toggle Button -->
+                <button id="theme-toggle" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 transition-all duration-200 shadow-sm border border-slate-200/50 dark:border-white/5" title="Ubah Mode Layar">
+                    <i id="theme-toggle-icon" class="fas fa-moon text-lg"></i>
+                </button>
             </div>
         </header>
 
@@ -213,6 +231,36 @@
         
         setInterval(updateClock, 1000);
         updateClock(); // Initial call
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+        function updateIcon() {
+            if (document.documentElement.classList.contains('dark')) {
+                themeToggleIcon.className = 'fas fa-sun text-amber-500 text-lg transition-transform duration-300 rotate-180';
+                themeToggleBtn.setAttribute('title', 'Ubah ke Mode Terang');
+            } else {
+                themeToggleIcon.className = 'fas fa-moon text-slate-700 text-lg transition-transform duration-300 rotate-0';
+                themeToggleBtn.setAttribute('title', 'Ubah ke Mode Gelap');
+            }
+        }
+
+        // Initialize icon on page load
+        updateIcon();
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                updateIcon();
+            });
+        }
     </script>
     
     <style>
@@ -222,11 +270,9 @@
             border: 1px solid rgba(255, 255, 255, 0.5); 
         }
         
-        @media (prefers-color-scheme: dark) {
-            .glass-card {
-                background: rgba(30, 41, 59, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
+        .dark .glass-card {
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </body>
